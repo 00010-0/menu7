@@ -3,19 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menú · Club Social</title>
+<title>Crazy Spot · Menú</title>
+<!--
+  ============================================================
+   INSTRUCCIONES (importante):
+   Guarda en ESTA MISMA CARPETA las dos imágenes que enviaste,
+   con estos nombres EXACTOS:
+       fondo.png   ->  la foto del marco neón azul
+       logo.png    ->  la foto del logo "Crazy Spot Menu"
+   Si no aparecen, el menú igual funciona con un fondo de respaldo.
+   Para cambiar precios: edita el texto dentro de cada <span>.
+  ============================================================
+-->
 <style>
-  /* ====== EDITA AQUÍ EL NOMBRE DEL CLUB en la línea con class="club-name" más abajo ====== */
-
   :root{
     --bg:        #02060f;
     --bg2:       #04101f;
-    --neon:      #18b6ff;
-    --neon-soft: #5fd2ff;
+    --neon:      #29c2ff;
+    --neon-soft: #7fdcff;
     --neon-deep: #0a6bd6;
-    --text:      #dff2ff;
-    --muted:     #7fa6c4;
-    --line:      rgba(31,150,221,0.25);
+    --text:      #eaf7ff;
+    --muted:     #8fb6d4;
+    --line:      rgba(60,180,255,0.30);
+    --panel:     rgba(2,10,22,0.55);
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -28,47 +38,63 @@
     -webkit-font-smoothing:antialiased;
   }
 
-  /* Fondo simple, sin filtros pesados (ligero para TV antigua) */
+  /* ===== FONDO: tu foto del marco neón (estático = ligero) ===== */
   body{
     background:
-      radial-gradient(circle at 50% -10%, rgba(24,182,255,0.10), transparent 55%),
       linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+  }
+  .bg{
+    position:fixed; inset:0;
+    background-image:url('fondo.png');
+    background-size:cover;
+    background-position:center;
+    z-index:0;
+  }
+  /* Capa oscura para que el texto se lea sobre el neón */
+  .bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background:rgba(2,7,16,0.45);
   }
 
   .stage{
+    position:relative; z-index:1;
     width:100vw; height:100vh;
     display:flex; flex-direction:column;
-    padding:2.4vh 2.4vw 2.0vh;
+    padding:2.4vh 3.0vw 2.0vh;
   }
 
-  /* ===== HEADER ===== */
+  /* ===== HEADER / LOGO ===== */
   header{
     text-align:center;
-    padding-bottom:1.4vh;
-    border-bottom:0.18vh solid var(--line);
     flex:0 0 auto;
+    padding-bottom:1.2vh;
   }
-  .club-name{
-    font-size:5.0vh;
-    font-weight:800;
-    letter-spacing:0.6vh;
-    text-transform:uppercase;
-    color:#fff;
-    /* Glow estático (no animado = barato). Solo el brillo late suavemente vía opacidad. */
-    text-shadow:0 0 0.6vh var(--neon), 0 0 1.6vh var(--neon-deep);
+  .logo{
+    height:15vh;
+    width:auto;
+    max-width:60vw;
+    object-fit:contain;
+    /* Resplandor estático + flotación/brillo muy suaves (solo transform/opacity = barato) */
+    filter:drop-shadow(0 0 1.2vh rgba(41,194,255,0.55));
+    animation:floaty 5s ease-in-out infinite;
+  }
+  /* Título de respaldo si no se encuentra logo.png */
+  .logo-fallback{
+    display:none;
+    font-size:6vh; font-weight:800; letter-spacing:0.4vh;
+    font-style:italic; color:#eaf7ff;
+    text-shadow:0 0 0.8vh var(--neon), 0 0 1.8vh var(--neon-deep);
     animation:breathe 4.5s ease-in-out infinite;
   }
-  .subtitle{
-    margin-top:0.4vh;
-    font-size:1.8vh;
-    letter-spacing:0.5vh;
-    text-transform:uppercase;
-    color:var(--neon-soft);
-  }
 
+  @keyframes floaty{
+    0%,100%{ transform:translateY(0); opacity:1; }
+    50%{ transform:translateY(-1.1vh); opacity:0.92; }
+  }
   @keyframes breathe{
     0%,100%{ opacity:1; }
-    50%{ opacity:0.78; }
+    50%{ opacity:0.8; }
   }
 
   /* ===== COLUMNAS ===== */
@@ -76,58 +102,62 @@
     flex:1 1 auto;
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
-    gap:2.2vw;
-    margin-top:1.6vh;
+    gap:1.8vw;
+    margin-top:0.6vh;
     min-height:0;
   }
 
   .col{
+    background:var(--panel);
+    border:0.15vh solid var(--line);
+    border-radius:1.2vh;
+    padding:1.4vh 1.4vw;
     opacity:0;
     transform:translateY(2vh);
     animation:rise 0.7s ease-out forwards;
   }
   .col:nth-child(1){ animation-delay:0.15s; }
-  .col:nth-child(2){ animation-delay:0.35s; }
-  .col:nth-child(3){ animation-delay:0.55s; }
+  .col:nth-child(2){ animation-delay:0.32s; }
+  .col:nth-child(3){ animation-delay:0.49s; }
 
   @keyframes rise{
     to{ opacity:1; transform:translateY(0); }
   }
 
   .cat{
-    font-size:2.8vh;
+    font-size:2.7vh;
     font-weight:800;
     text-transform:uppercase;
     letter-spacing:0.35vh;
     color:var(--neon);
-    text-shadow:0 0 0.8vh rgba(24,182,255,0.55);
-    padding-bottom:0.6vh;
-    margin-bottom:0.9vh;
-    border-bottom:0.18vh solid var(--line);
+    text-shadow:0 0 0.9vh rgba(41,194,255,0.6);
+    padding-bottom:0.5vh;
+    margin-bottom:0.7vh;
+    border-bottom:0.16vh solid var(--line);
   }
-  .cat.spaced{ margin-top:2.0vh; }
+  .cat.spaced{ margin-top:1.6vh; }
 
   .brand{
-    font-size:1.7vh;
+    font-size:1.65vh;
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:0.2vh;
     color:var(--neon-soft);
-    margin:1.0vh 0 0.3vh;
+    margin:0.9vh 0 0.2vh;
   }
 
   .item{
     display:flex;
     align-items:baseline;
     gap:0.6vw;
-    font-size:2.05vh;
-    line-height:1.5;
-    padding:0.15vh 0;
+    font-size:2.0vh;
+    line-height:1.45;
+    padding:0.1vh 0;
   }
   .item .name{ flex:0 0 auto; font-weight:600; color:var(--text); }
   .item .dots{
     flex:1 1 auto;
-    border-bottom:0.12vh dotted rgba(127,166,196,0.45);
+    border-bottom:0.12vh dotted rgba(143,182,212,0.45);
     transform:translateY(-0.35vh);
   }
   .item .price{
@@ -140,7 +170,7 @@
   footer{
     flex:0 0 auto;
     text-align:center;
-    margin-top:1.0vh;
+    margin-top:0.9vh;
     font-size:1.4vh;
     letter-spacing:0.3vh;
     color:var(--muted);
@@ -148,12 +178,13 @@
 </style>
 </head>
 <body>
+  <div class="bg"></div>
   <div class="stage">
 
     <header>
-      <!-- 👇 CAMBIA EL NOMBRE DEL CLUB AQUÍ 👇 -->
-      <div class="club-name">Club Social</div>
-      <div class="subtitle">Menú · Aportaciones para socios</div>
+      <img class="logo" src="logo.png" alt="Crazy Spot Menú"
+           onerror="this.style.display='none';document.getElementById('lf').style.display='block';">
+      <div class="logo-fallback" id="lf">Crazy Spot</div>
     </header>
 
     <div class="menu">
